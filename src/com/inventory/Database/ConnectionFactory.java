@@ -5,15 +5,11 @@
  */
 package com.inventory.Database;
 
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.FileWriter;
-import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.Statement;
-import java.util.Properties;
+
 
 /**
  *
@@ -28,23 +24,12 @@ public class ConnectionFactory {
     static String username;
     static String password;
 
-    Properties prop;
-
     Connection conn = null;
     Statement statement = null;
     ResultSet resultSet = null;
 
     public ConnectionFactory(){
-        try {
-            
-            prop = new Properties();
-            prop.loadFromXML(new FileInputStream("lib/DBCredentials.xml"));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        username = prop.getProperty("username");
-        password = prop.getProperty("password");
-
+//        
         try {
             Class.forName(driver);
             conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/inventory?useSSL=false","root","cenation97");
