@@ -8,7 +8,6 @@ package com.inventory.UI;
 import com.inventory.DAO.ProductDAO;
 import com.inventory.DAO.SupplierDAO;
 import com.inventory.DTO.ProductDTO;
-import com.toedter.calendar.JDateChooser;
 
 import javax.swing.*;
 import java.sql.SQLException;
@@ -345,15 +344,28 @@ public class ProductPage extends javax.swing.JPanel {
         }
     }//GEN-LAST:event_editButtonActionPerformed
 
+    private boolean isNumeric(String str) {
+    try {
+        double d = Double.parseDouble(str);
+    } catch (NumberFormatException | NullPointerException nfe) {
+        return false;
+    }
+    return true;
+}
     private void addButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addButtonActionPerformed
         productDTO = new ProductDTO();
         if (nameText.getText().equals("") || costText.getText().equals("")
                 || sellText.getText().equals("") || brandText.getText().equals(""))
             JOptionPane.showMessageDialog(null, "Please enter all the required details.");
         else {
+            if (!isNumeric(costText.getText()) || !isNumeric(sellText.getText()) || Double.parseDouble(costText.getText()) < 0 || Double.parseDouble(sellText.getText()) < 0 || !isNumeric(quantityText.getText())){
+                JOptionPane.showMessageDialog(null, "Please enter valid details for quantity, cost price or selling price.");
+                return;
+            }
             productDTO.setProdCode(codeText.getText());
             productDTO.setProdName(nameText.getText());
             productDTO.setDate(jDateChooser1.getDateFormatString());
+            
             productDTO.setQuantity(Integer.parseInt(quantityText.getText()));
             productDTO.setCostPrice(Double.parseDouble(costText.getText()));
             productDTO.setSellPrice(Double.parseDouble(sellText.getText()));
@@ -409,8 +421,6 @@ public class ProductPage extends javax.swing.JPanel {
         sellText.setText(data[3].toString());
         brandText.setText(data[4].toString());
 
-       // productName = data[1].toString();
-
     }//GEN-LAST:event_productTableMouseClicked
 
     private void addSuppButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addSuppButtonActionPerformed
@@ -424,14 +434,14 @@ public class ProductPage extends javax.swing.JPanel {
     }//GEN-LAST:event_refreshButtonActionPerformed
 
     private void searchTextKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_searchTextKeyReleased
-        loadSearchData(searchText.getText());
+        loadSearchData(searchText.getText());   //key by key press search, refer down function
     }//GEN-LAST:event_searchTextKeyReleased
 
     private void searchTextActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchTextActionPerformed
         // TODO add your handling code here:
+        // useless, by mistake
     }//GEN-LAST:event_searchTextActionPerformed
 
-    // Method to update combo box containing supplier names
     public void loadComboBox() {
         try {
             SupplierDAO supplierDAO = new SupplierDAO();

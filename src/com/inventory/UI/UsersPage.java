@@ -70,6 +70,11 @@ public class UsersPage extends javax.swing.JPanel {
         jLabel6.setText("Password:");
 
         userTypeCombo.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "ADMINISTRATOR", "EMPLOYEE" }));
+        userTypeCombo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                userTypeComboActionPerformed(evt);
+            }
+        });
 
         addButton.setText("Add");
         addButton.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
@@ -162,7 +167,7 @@ public class UsersPage extends javax.swing.JPanel {
                     .addComponent(addButton)
                     .addComponent(deleteButton)
                     .addComponent(clearButton))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(9, Short.MAX_VALUE))
         );
 
         userTable.setBorder(javax.swing.BorderFactory.createEtchedBorder());
@@ -205,12 +210,12 @@ public class UsersPage extends javax.swing.JPanel {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jSeparator1)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 432, Short.MAX_VALUE)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 438, Short.MAX_VALUE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(entryPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 62, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 0, Short.MAX_VALUE)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -243,12 +248,37 @@ public class UsersPage extends javax.swing.JPanel {
         if (nameText.getText().equals("") || locationText.getText().equals("") || phoneText.getText().equals(""))
             JOptionPane.showMessageDialog(null, "Please fill all the required fields.");
         else {
+            //name error handling
+            if (!nameText.getText().matches("^[a-zA-Z]+$")) {
+                JOptionPane.showMessageDialog(null, "Please enter only alphabets in the Full Name field.");
+                return;
+            }
+            
+            //location error handling
+            if (!locationText.getText().matches("^[a-zA-Z]+$")) {
+                JOptionPane.showMessageDialog(null, "Please enter only alphabets in the Full Name field.");
+                return;
+            }
+
+            // Validation for password length
+            String password = String.valueOf(passText.getPassword());
+            if (password.length() < 4 || password.length() > 10) {
+            JOptionPane.showMessageDialog(null, "Password should be between 4 and 10 characters.");
+                return;
+            }
+            
+            //validation for contact number
+            if (!phoneText.getText().matches("\\d{10}")) {
+                JOptionPane.showMessageDialog(null, "Contact number should be exactly 10 digits.");
+                return;
+            }
+            
             userType = (String) userTypeCombo.getSelectedItem();
-            userDTO.setFullName(nameText.getText());
+            userDTO.setFullName(nameText.getText());      // used to extract and send data to dto file
             userDTO.setLocation(locationText.getText());
             userDTO.setPhone(phoneText.getText());
             userDTO.setUsername(usernameText.getText());
-            userDTO.setPassword(passText.getText());
+            userDTO.setPassword(password);
             userDTO.setUserType(userType);
             new UserDAO().addUserDAO(userDTO, userType);
             loadDataSet();
@@ -289,6 +319,10 @@ public class UsersPage extends javax.swing.JPanel {
         usernameText.setText(val[4].toString());
         userTypeCombo.setSelectedItem(val[6].toString());
     }//GEN-LAST:event_userTableMouseClicked
+
+    private void userTypeComboActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_userTypeComboActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_userTypeComboActionPerformed
 
     public void loadDataSet() {
         try {

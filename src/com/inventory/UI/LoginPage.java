@@ -158,7 +158,6 @@ public class LoginPage extends javax.swing.JFrame {
         } catch(Exception ex){
             ex.printStackTrace();
         }
-        
         return encPass;
     }
     
@@ -166,8 +165,7 @@ public class LoginPage extends javax.swing.JFrame {
     private void loginButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loginButtonActionPerformed
         String username = userText.getText();
         String password = passText.getText();
-        //TODO Password encryption to be added later:
-        //String password = encryptPass(pass);
+        
         userType = (String)jComboBox1.getSelectedItem();
 
         if (new ConnectionFactory().checkLogin(username, password, userType)){
@@ -203,7 +201,7 @@ public class LoginPage extends javax.swing.JFrame {
             } catch (UnsupportedLookAndFeelException ex) {
             Logger.getLogger(LoginPage.class.getName()).log(Level.SEVERE, null, ex);
         } 
-       
+//       
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {

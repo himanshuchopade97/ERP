@@ -7,7 +7,7 @@ package com.inventory.UI;
 
 import com.inventory.DAO.UserDAO;
 import com.inventory.DTO.UserDTO;
-import com.inventory.Database.ConnectionFactory;
+
 
 import javax.swing.*;
 import java.awt.CardLayout;
@@ -55,8 +55,8 @@ public class Dashboard extends javax.swing.JFrame {
         displayPanel.add("Current Stock", new CurrentStockPage(username));
         displayPanel.add("Sales", new SalesPage(username, this));
         displayPanel.add("Purchase", new PurchasePage(this));
-        displayPanel.add("Logs", new UserLogsPage());
-
+    
+        
         this.addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosing(WindowEvent e) {
@@ -122,14 +122,11 @@ public class Dashboard extends javax.swing.JFrame {
         salesButton = new javax.swing.JButton();
         usersButton = new javax.swing.JButton();
         purchaseButton = new javax.swing.JButton();
-        logsButton = new javax.swing.JButton();
         displayPanel = new javax.swing.JPanel();
         userPanel = new javax.swing.JPanel();
         nameLabel = new javax.swing.JLabel();
         logoutButton = new javax.swing.JButton();
         jMenuBar1 = new javax.swing.JMenuBar();
-        jMenu1 = new javax.swing.JMenu();
-        jMenu2 = new javax.swing.JMenu();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Inventory Manager");
@@ -226,14 +223,6 @@ public class Dashboard extends javax.swing.JFrame {
             }
         });
 
-        logsButton.setText("User Logs");
-        logsButton.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        logsButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                logsButtonActionPerformed(evt);
-            }
-        });
-
         javax.swing.GroupLayout navPanelLayout = new javax.swing.GroupLayout(navPanel);
         navPanel.setLayout(navPanelLayout);
         navPanelLayout.setHorizontalGroup(
@@ -248,8 +237,7 @@ public class Dashboard extends javax.swing.JFrame {
                     .addComponent(suppButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(salesButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(usersButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(purchaseButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(logsButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(purchaseButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
         navPanelLayout.setVerticalGroup(
@@ -271,9 +259,7 @@ public class Dashboard extends javax.swing.JFrame {
                 .addComponent(purchaseButton, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(usersButton, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(logsButton, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(24, Short.MAX_VALUE))
+                .addContainerGap(77, Short.MAX_VALUE))
         );
 
         displayPanel.setLayout(new java.awt.CardLayout());
@@ -338,12 +324,6 @@ public class Dashboard extends javax.swing.JFrame {
                     .addComponent(navPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
-
-        jMenu1.setText("File");
-        jMenuBar1.add(jMenu1);
-
-        jMenu2.setText("Edit");
-        jMenuBar1.add(jMenu2);
 
         setJMenuBar(jMenuBar1);
 
@@ -415,9 +395,7 @@ public class Dashboard extends javax.swing.JFrame {
         addPurchasePage();
     }//GEN-LAST:event_purchaseButtonActionPerformed
 
-    private void logsButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_logsButtonActionPerformed
-        addLogsPage();
-    }//GEN-LAST:event_logsButtonActionPerformed
+                                            
 
     // Method to display the user currently logged in
     public void currentUserSession() {
@@ -429,7 +407,7 @@ public class Dashboard extends javax.swing.JFrame {
     // Allows only the ADMINISTRATOR type user to view and manipulate 'Users' and 'User Logs'
     public void notForEmployee(){
         navPanel.remove(usersButton);
-        navPanel.remove(logsButton);
+//        navPanel.remove(logsButton);
         //navPanel.remove(salesButton);
     }
 
@@ -437,11 +415,8 @@ public class Dashboard extends javax.swing.JFrame {
     private javax.swing.JButton custButton;
     private javax.swing.JPanel displayPanel;
     private javax.swing.JButton homeButton;
-    private javax.swing.JMenu jMenu1;
-    private javax.swing.JMenu jMenu2;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JButton logoutButton;
-    private javax.swing.JButton logsButton;
     private javax.swing.JPanel mainPanel;
     private javax.swing.JButton menuButton;
     private javax.swing.JPanel menuPanel;
