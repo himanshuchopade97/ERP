@@ -235,4 +235,5 @@ desc salesinfo;
 ALTER TABLE salesinfo DROP COLUMN date;
 show tables;
 select * from salesinfo;
+insert into salesinfo values (1,"mbp987","vip1",1,200,"Samsung");
 

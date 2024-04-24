@@ -3,13 +3,10 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Me/ERP/src/com/inventory/DAO/UserDAO.java</file>
-            <file>file:/C:/Me/ERP/src/com/inventory/UI/SalesPage.java</file>
-            <file>file:/C:/Me/ERP/src/com/inventory/UI/LoginPage.java</file>
+            <file>file:/C:/Me/ERP/src/com/inventory/UI/SupplierPage.java</file>
+            <file>file:/C:/Me/ERP/src/com/inventory/UI/PurchasePage.java</file>
             <file>file:/C:/Me/ERP/src/com/inventory/UI/ProductPage.java</file>
-            <file>file:/C:/Me/ERP/src/com/inventory/UI/CurrentStockPage.java</file>
-            <file>file:/C:/Me/ERP/src/com/inventory/UI/UsersPage.java</file>
-            <file>file:/C:/Me/ERP/src/com/inventory/UI/Dashboard.java</file>
+            <file>file:/C:/Me/ERP/src/com/inventory/UI/CustomerPage.java</file>
         </group>
     </open-files>
 </project-private>

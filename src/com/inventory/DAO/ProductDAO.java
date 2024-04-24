@@ -393,7 +393,9 @@ public class ProductDAO {
                 statement.executeUpdate(stockQuery);
                 statement.executeUpdate(salesQuery);
                 JOptionPane.showMessageDialog(null, "Product sold.");
+            
             }
+           
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
