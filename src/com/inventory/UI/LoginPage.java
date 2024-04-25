@@ -12,6 +12,7 @@ import com.inventory.Database.ConnectionFactory;
 
 import java.math.BigInteger;
 import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.time.LocalDateTime;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -164,21 +165,27 @@ public class LoginPage extends javax.swing.JFrame {
     String userType;
     private void loginButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loginButtonActionPerformed
         String username = userText.getText();
-        String password = passText.getText();
-        
-        userType = (String)jComboBox1.getSelectedItem();
+    String password = passText.getText();
+    String userType = (String) jComboBox1.getSelectedItem();
 
-        if (new ConnectionFactory().checkLogin(username, password, userType)){
+    try {
+        // Hash the entered password
+        String hashedPassword = hashPassword(password);
+
+        if (new ConnectionFactory().checkLogin(username, hashedPassword, userType)) {
             inTime = LocalDateTime.now();
             userDTO.setInTime(String.valueOf(inTime));
             dispose();
             new Dashboard(username, userType, userDTO);
         } else {
-           JOptionPane.showMessageDialog(
+            JOptionPane.showMessageDialog(
                    null,
                    "Invalid username or password.");
         }
-        
+    } catch (NoSuchAlgorithmException ex) {
+        ex.printStackTrace();
+        // Handle the exception, e.g., display an error message
+    }
     }//GEN-LAST:event_loginButtonActionPerformed
 
     private void clearButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_clearButtonActionPerformed
@@ -190,6 +197,25 @@ public class LoginPage extends javax.swing.JFrame {
         // TODO add your handling code here:
         loginButtonActionPerformed(evt);
     }//GEN-LAST:event_passTextActionPerformed
+
+    private String hashPassword(String password) throws NoSuchAlgorithmException {
+    MessageDigest digest = MessageDigest.getInstance("SHA-256");
+    byte[] encodedHash = digest.digest(password.getBytes());
+    return bytesToHex(encodedHash);
+}
+
+// Method to convert bytes to hexadecimal string
+private String bytesToHex(byte[] hash) {
+    StringBuilder hexString = new StringBuilder(2 * hash.length);
+    for (byte b : hash) {
+        String hex = Integer.toHexString(0xff & b);
+        if (hex.length() == 1) {
+            hexString.append('0');
+        }
+        hexString.append(hex);
+    }
+    return hexString.toString();
+}
 
     
     // Driver Method

@@ -8,6 +8,8 @@ package com.inventory.DAO;
 import com.inventory.DTO.UserDTO;
 import com.inventory.Database.ConnectionFactory;
 import com.inventory.UI.UsersPage;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
@@ -61,50 +63,58 @@ public class UserDAO {
         }
     }
     public void addFunction(UserDTO userDTO, String userType) {
-        try {
-            String username = null;
-            String password = null;
-            String oldUsername = null;
-            String resQuery = "SELECT * FROM users";
-            resultSet = statement.executeQuery(resQuery);
+    try {
+        String username = null;
+        String password = null;
+        String oldUsername = null;
+        String resQuery = "SELECT * FROM users";
+        resultSet = statement.executeQuery(resQuery);
 
-            if(!resultSet.next()){
-                username = "root";
-                password = "root";
-            }
-//            else {
-//                String resQuery2 = "SELECT * FROM users ORDER BY id DESC";
-//                resultSet = statement.executeQuery(resQuery2);
-//
-//                if(resultSet.next()){
-//                    oldUsername = resultSet.getString("username");
-//                    Integer uCode = Integer.parseInt(oldUsername.substring(4));
-//                    uCode++;
-//                    username = "user" + uCode;
-//                    password = "user" + uCode;
-//                }
-//            }
-
-            String query = "INSERT INTO users (name,location,phone,username,password,usertype) " +
-                    "VALUES(?,?,?,?,?,?)";
-            prepStatement = conn.prepareStatement(query);
-            prepStatement.setString(1, userDTO.getFullName());
-            prepStatement.setString(2, userDTO.getLocation());
-            prepStatement.setString(3, userDTO.getPhone());
-            prepStatement.setString(4, userDTO.getUsername());
-            prepStatement.setString(5, userDTO.getPassword());
-            prepStatement.setString(6, userDTO.getUserType());
-            prepStatement.executeUpdate();
-
-            if("ADMINISTRATOR".equals(userType))
-                JOptionPane.showMessageDialog(null, "New administrator added.");
-            else JOptionPane.showMessageDialog(null, "New employee added.");
-
-        } catch (Exception ex){
-            ex.printStackTrace();
+        if(!resultSet.next()){
+            username = "root";
+            password = "root";
         }
-    }
+        // Hash the password
+        String hashedPassword = hashPassword(userDTO.getPassword());
 
+        String query = "INSERT INTO users (name,location,phone,username,password,usertype) " +
+                "VALUES(?,?,?,?,?,?)";
+        prepStatement = conn.prepareStatement(query);
+        prepStatement.setString(1, userDTO.getFullName());
+        prepStatement.setString(2, userDTO.getLocation());
+        prepStatement.setString(3, userDTO.getPhone());
+        prepStatement.setString(4, userDTO.getUsername());
+        prepStatement.setString(5, hashedPassword); // Insert hashed password
+        prepStatement.setString(6, userDTO.getUserType());
+        prepStatement.executeUpdate();
+
+        if("ADMINISTRATOR".equals(userType))
+            JOptionPane.showMessageDialog(null, "New administrator added.");
+        else JOptionPane.showMessageDialog(null, "New employee added.");
+
+    } catch (Exception ex){
+        ex.printStackTrace();
+    }
+}
+
+    private String hashPassword(String password) throws NoSuchAlgorithmException {
+        MessageDigest digest = MessageDigest.getInstance("SHA-256");
+        byte[] encodedHash = digest.digest(password.getBytes());
+        return bytesToHex(encodedHash); 
+    }
+    
+    private String bytesToHex(byte[] hash) {
+        StringBuilder hexString = new StringBuilder(2 * hash.length);
+        for (byte b : hash) {
+            String hex = Integer.toHexString(0xff & b);
+            if (hex.length() == 1) {
+                hexString.append('0');
+            }
+            hexString.append(hex);
+        }
+        return hexString.toString();
+    }
+    
     // Method to edit existing user
     public void editUserDAO(UserDTO userDTO) {
 
