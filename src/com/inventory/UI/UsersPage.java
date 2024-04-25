@@ -273,6 +273,11 @@ public class UsersPage extends javax.swing.JPanel {
                 return;
             }
             
+             if (!phoneText.getText().matches("\\d+")) {
+                JOptionPane.showMessageDialog(null, "Please enter only digits in the Contact field.");
+                return;
+            }
+            
             userType = (String) userTypeCombo.getSelectedItem();
             userDTO.setFullName(nameText.getText());      // used to extract and send data to dto file
             userDTO.setLocation(locationText.getText());
