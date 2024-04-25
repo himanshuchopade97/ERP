@@ -2,6 +2,6 @@ This is our JAVA-DBMS project of Enterprise Resource Planning (ERP) or Inventory
 
 This is our system architecture diagram
 
-![Image Description]("system architecture.jpg")
+![Image Description](https://github.com/himanshuchopade97/ERP/blob/main/system%20architecture.jpg)
 
 
