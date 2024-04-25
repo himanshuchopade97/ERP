@@ -142,9 +142,9 @@ CREATE TABLE `salesinfo` (
 
 LOCK TABLES `salesinfo` WRITE;
 /*!40000 ALTER TABLE `salesinfo` DISABLE KEYS */;
+INSERT INTO `salesinfo` VALUES (2001,'Fri Jan 16 23:12:40 IST 2021','prod1','vip1',3,270000,'stduser1'),(2002,'Fri Jan 16 23:12:40 IST 2021','prod2','vip2',2,144000,'stduser1'),(2003,'Fri Jan 16 23:12:40 IST 2021','prod3','std1',1,64000,'aduser1'),(2004,'Fri Jan 16 23:12:40 IST 2021','prod4','std2',5,255000,'aduser1'),(2006,'Thu Aug 05 17:29:36 IST 2021','prod1','vip1',2,180000,'root'),(2007,'Fri Aug 06 00:00:00 IST 2021','prod4','std1',1,51000,'aduser1'),(2008,'Fri Aug 06 02:41:28 IST 2021','prod7','std1',1,3500,'aduser1'),(2009,'Sat Aug 07 00:00:00 IST 2021','prod7','std1',5,17500,'aduser1'),(2010,'Thu Aug 12 00:00:00 IST 2021','prod4','vip3',2,102000,'root'),(2011,'Sun Aug 15 23:08:51 IST 2021','prod7','vip2',10,35000,'root'),(2012,'Thu Aug 26 15:17:48 IST 2021','prod4','vip3',5,255000,'aduser1');
 /*!40000 ALTER TABLE `salesinfo` ENABLE KEYS */;
 UNLOCK TABLES;
-
 --
 -- Table structure for table `suppliers`
 --
@@ -231,9 +231,9 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 use inventory;
-desc salesinfo;
-ALTER TABLE salesinfo DROP COLUMN date;
 show tables;
-select * from salesinfo;
-insert into salesinfo values (1,"mbp987","vip1",1,200,"Samsung");
+
+
+select * from customers;
+
 

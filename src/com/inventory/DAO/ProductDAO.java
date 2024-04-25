@@ -16,7 +16,7 @@ import java.util.Vector;
 
 /**
  *
- * @author hriday
+ * @author asjad
  */
 
 // Data Access Object for Products, Purchase, Stock and Sales
@@ -393,9 +393,7 @@ public class ProductDAO {
                 statement.executeUpdate(stockQuery);
                 statement.executeUpdate(salesQuery);
                 JOptionPane.showMessageDialog(null, "Product sold.");
-            
             }
-           
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
