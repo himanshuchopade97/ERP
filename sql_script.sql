@@ -23,7 +23,7 @@ DROP TABLE IF EXISTS `currentstock`;
 CREATE TABLE `currentstock` (
   `productcode` varchar(45) NOT NULL,
   `quantity` int NOT NULL,
-  PRIMARY KEY (`productcode`)
+	foreign key (productcode) references products (productcode)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -49,7 +49,8 @@ CREATE TABLE `customers` (
   `fullname` varchar(45) NOT NULL,
   `location` varchar(45) NOT NULL,
   `phone` varchar(45) NOT NULL,
-  PRIMARY KEY (`cid`)
+  PRIMARY KEY (`customercode`),
+  UNIQUE KEY `cid_UNIQUE` (`cid`)
 ) ENGINE=InnoDB AUTO_INCREMENT=307 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -76,8 +77,10 @@ CREATE TABLE `products` (
   `costprice` double NOT NULL,
   `sellprice` double NOT NULL,
   `brand` varchar(45) NOT NULL,
-  PRIMARY KEY (`pid`),
-  UNIQUE KEY `productcode_UNIQUE` (`productcode`)
+  
+  PRIMARY KEY (`productcode`),
+  UNIQUE KEY `pid_UNIQUE` (`pid`)
+  
 ) ENGINE=InnoDB AUTO_INCREMENT=130 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -94,9 +97,6 @@ UNLOCK TABLES;
 -- Table structure for table `purchaseinfo`
 --
 
-DROP TABLE IF EXISTS `purchaseinfo`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `purchaseinfo` (
   `purchaseID` int NOT NULL AUTO_INCREMENT,
   `suppliercode` varchar(45) NOT NULL,
@@ -104,8 +104,10 @@ CREATE TABLE `purchaseinfo` (
   `date` varchar(45) NOT NULL,
   `quantity` int NOT NULL,
   `totalcost` double NOT NULL,
-  PRIMARY KEY (`purchaseID`)
-) ENGINE=InnoDB AUTO_INCREMENT=1012 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+  PRIMARY KEY (`purchaseID`),
+  foreign key (productcode) references products (productcode),
+  foreign key (suppliercode) references suppliers (suppliercode)
+)  ENGINE=InnoDB AUTO_INCREMENT=1012 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -132,6 +134,8 @@ CREATE TABLE `salesinfo` (
   `quantity` int NOT NULL,
   `revenue` double NOT NULL,
   `soldby` varchar(45) NOT NULL,
+  foreign key (productcode) references products (productcode),
+  foreign key (customercode) references customers (customercode),
   PRIMARY KEY (`salesid`)
 ) ENGINE=InnoDB AUTO_INCREMENT=2013 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -158,7 +162,8 @@ CREATE TABLE `suppliers` (
   `fullname` varchar(45) NOT NULL,
   `location` varchar(45) NOT NULL,
   `mobile` varchar(10) NOT NULL,
-  PRIMARY KEY (`sid`)
+  PRIMARY KEY (`suppliercode`),
+  UNIQUE KEY `sid_UNIQUE` (`sid`)
 ) ENGINE=InnoDB AUTO_INCREMENT=409 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -170,30 +175,7 @@ LOCK TABLES `suppliers` WRITE;
 /*!40000 ALTER TABLE `suppliers` DISABLE KEYS */;
 /*!40000 ALTER TABLE `suppliers` ENABLE KEYS */;
 UNLOCK TABLES;
-
---
--- Table structure for table `userlogs`
---
-
-DROP TABLE IF EXISTS `userlogs`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `userlogs` (
-  `username` varchar(45) NOT NULL,
-  `in_time` varchar(45) NOT NULL,
-  `out_time` varchar(45) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `userlogs`
---
-
-LOCK TABLES `userlogs` WRITE;
-/*!40000 ALTER TABLE `userlogs` DISABLE KEYS */;
-/*!40000 ALTER TABLE `userlogs` ENABLE KEYS */;
-UNLOCK TABLES;
-
+ 
 --
 -- Table structure for table `users`
 --
@@ -213,9 +195,7 @@ CREATE TABLE `users` (
 ) ENGINE=InnoDB AUTO_INCREMENT=31 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
---
--- Dumping data for table `users`
---
+
 
 LOCK TABLES `users` WRITE;
 /*!40000 ALTER TABLE `users` DISABLE KEYS */;
@@ -223,17 +203,114 @@ LOCK TABLES `users` WRITE;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
-/*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
-/*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
-/*!40014 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS */;
-/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
-/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
-/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
-/*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
-use inventory;
-show tables;
 
 
-select * from customers;
+-- DELIMITER $$		-- function to calculate total revenue for a product
+-- CREATE FUNCTION CalculateTotalRevenue(productId VARCHAR(45)) RETURNS DOUBLE
+-- READS SQL DATA
+-- BEGIN
+--   DECLARE totalRevenue DOUBLE;
+--   SELECT SUM(revenue) INTO totalRevenue FROM salesinfo WHERE productcode = productId;
+--   RETURN totalRevenue;
+-- END$$
+-- DELIMITER ;
+-- select CalculateTotalRevenue ("a101");
+
+-- DELIMITER $$		-- function to get product cost price
+-- CREATE FUNCTION GetProductCostPrice(productId VARCHAR(45)) RETURNS DOUBLE
+-- reads sql data
+-- BEGIN
+--   DECLARE costPrice int;
+--   SELECT costprice INTO costPrice FROM products WHERE productcode = productId;
+--   RETURN costPrice;
+-- END$$
+-- DELIMITER ;
+-- SELECT GetProductCostPrice ("a102");
 
 
+-- DELIMITER $$				-- function to check stock availability
+-- CREATE FUNCTION CheckStockAvailability(productId VARCHAR(45)) RETURNS BOOLEAN
+-- reads sql data
+-- BEGIN
+--   DECLARE stockQuantity INT;
+--   SELECT quantity INTO stockQuantity FROM currentstock WHERE productcode = productId;
+--   IF stockQuantity > 0 THEN
+--     RETURN TRUE;
+--   ELSE
+--     RETURN FALSE;
+--   END IF;
+-- END$$
+-- DELIMITER ;
+-- select CheckStockAvailability ("a101");
+
+-- DELIMITER $$
+-- CREATE PROCEDURE AddNewProduct(
+--   IN p_productcode VARCHAR(45),
+--   IN p_productname VARCHAR(45),
+--   IN p_costprice DOUBLE,
+--   IN p_sellprice DOUBLE,
+--   IN p_brand VARCHAR(45)
+-- )
+-- BEGIN
+--   INSERT INTO products (productcode, productname, costprice, sellprice, brand)
+--   VALUES (p_productcode, p_productname, p_costprice, p_sellprice, p_brand);
+-- END$$
+-- DELIMITER ;
+-- CALL AddNewProduct('a105', 'Keyboard', 1600, 2000, 'Redgear');
+
+
+-- DELIMITER $$
+-- CREATE PROCEDURE UpdateCustomerLocation(
+--   IN p_customercode VARCHAR(45),
+--   IN p_newLocation VARCHAR(45)
+-- )
+-- BEGIN
+--   UPDATE customers SET location = p_newLocation WHERE customercode = p_customercode;
+-- END$$
+-- DELIMITER ;
+-- CALL UpdateCustomerLocation ("vip1","Vadodara");
+
+
+-- DELIMITER $$
+-- CREATE PROCEDURE DeleteSupplier(
+--   IN p_suppliercode VARCHAR(45)
+-- )
+-- BEGIN
+--   DELETE FROM suppliers WHERE suppliercode = p_suppliercode;
+-- END$$
+-- DELIMITER ;
+-- CALL DeleteSupplier ("s105");
+
+-- DELIMITER $$
+-- CREATE TRIGGER UpdateCurrentStockOnSale
+-- AFTER INSERT ON salesinfo
+-- FOR EACH ROW
+-- BEGIN
+--   UPDATE currentstock
+--   SET quantity = quantity - NEW.quantity
+--   WHERE productcode = NEW.productcode;
+-- END$$
+-- DELIMITER ;
+
+-- DELIMITER $$
+-- CREATE TRIGGER UpdateTotalCostOnPurchase
+-- AFTER INSERT ON purchaseinfo
+-- FOR EACH ROW
+-- BEGIN
+--   UPDATE purchaseinfo
+--   SET totalcost = NEW.quantity * GetProductCostPrice(NEW.productcode)
+--   WHERE purchaseID = NEW.purchaseID;
+-- END$$
+-- DELIMITER ;
+
+-- DELIMITER $$
+-- CREATE TRIGGER LogUserActivityOnSales
+-- AFTER INSERT ON salesinfo
+-- FOR EACH ROW
+-- BEGIN
+--   INSERT INTO user_activity (activity_timestamp, activity_description)
+--   VALUES (NOW(), CONCAT('New sales record added by ', NEW.soldby));
+-- END$$
+-- DELIMITER ;
+
+select * from currentstock;

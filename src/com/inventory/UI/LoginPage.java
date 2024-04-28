@@ -164,28 +164,26 @@ public class LoginPage extends javax.swing.JFrame {
     
     String userType;
     private void loginButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loginButtonActionPerformed
-        String username = userText.getText();
-    String password = passText.getText();
-    String userType = (String) jComboBox1.getSelectedItem();
-
-    try {
-        // Hash the entered password
-        String hashedPassword = hashPassword(password);
-
-        if (new ConnectionFactory().checkLogin(username, hashedPassword, userType)) {
-            inTime = LocalDateTime.now();
-            userDTO.setInTime(String.valueOf(inTime));
-            dispose();
-            new Dashboard(username, userType, userDTO);
-        } else {
-            JOptionPane.showMessageDialog(
-                   null,
-                   "Invalid username or password.");
+        try {
+            String username = userText.getText();
+            String password = passText.getText();
+            String userType = (String) jComboBox1.getSelectedItem();
+            
+            // Hash the entered password
+            String hashedPassword = hashPassword(password);
+            
+            if (new ConnectionFactory().checkLogin(username,hashedPassword, userType)) {
+                inTime = LocalDateTime.now();
+                userDTO.setInTime(String.valueOf(inTime));
+                dispose();
+                new Dashboard(username, userType, userDTO);
+            } else {
+                JOptionPane.showMessageDialog(
+                        null,
+                        "Invalid username or password.");
+            }       } catch (NoSuchAlgorithmException ex) {
+            Logger.getLogger(LoginPage.class.getName()).log(Level.SEVERE, null, ex);
         }
-    } catch (NoSuchAlgorithmException ex) {
-        ex.printStackTrace();
-        // Handle the exception, e.g., display an error message
-    }
     }//GEN-LAST:event_loginButtonActionPerformed
 
     private void clearButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_clearButtonActionPerformed

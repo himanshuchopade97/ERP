@@ -79,7 +79,7 @@ public class ProductDAO {
         return resultSet;
     }
 
-    public Double getProdCost(String prodCode) {
+     public Double getProdCost(String prodCode) {
         Double costPrice = null;
         try {
             String query = "SELECT costprice FROM products WHERE productcode='" +prodCode+ "'";
