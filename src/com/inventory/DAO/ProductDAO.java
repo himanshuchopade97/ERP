@@ -174,6 +174,7 @@ public class ProductDAO {
                     + "' AND brand='"
                     + productDTO.getBrand()
                     + "'";
+
             resultSet = statement.executeQuery(query);
             if (resultSet.next())
                 JOptionPane.showMessageDialog(null, "Product has already been added.");
